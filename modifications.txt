@@ -1,0 +1,125 @@
+========================================================================
+==================== Modifications =====================================
+========================================================================
+
+
+27/12/2016 de xxhxx à 13h32 :
+	- lancement depuis index OK, log in/out OK, message si échec d'identification OK
+	
+	- Modifications dans les controlleurs AdminCategorieController, AdminProduitController
+		- reste l'index et les photos
+	
+	- Modifications dans entity.Produit : service
+		- rajout du columnDefinition = "BIT" car renvoi d'une erreur chez moi (Richard)
+	
+	- Modification après le premier run du jdbc.properties : 
+		- passage à 'validate' au lieu de 'create'
+		
+	- Modification dans accueil.jsp
+		- MAJ du message en cas de login Admin categorie
+		- MAJ du message en cas de login Admin produit
+		
+	
+	- Création des .jsp d'ajout / modification de catégories et produits
+		- pas de primefaces pour le moment
+		- création d'une page pour ajout et une page pour modifier, ou on se sert de la même (par catégorie
+		  et par produit bien entendu) ?
+		- Pour le moment, seule une des 2/4 réalisée (ajout catégorie), attente du point d'avancement.
+			==> 4
+	
+	
+	
+	- pour le point d'avancement : 
+		- Dès le login effectué : redirection vers la page admin?
+		- A quoi sert le ROLE_ADMIN ? Il y a les ROLE_ADMIN_PROD, ROLE_ADMIN_CAT et ROLE_USER déjà. 
+			==> A rien. Il est à supprimer du code pour le simplifier.
+				==> fait
+	
+	
+	
+27/12/2016 de 14h00 à xxhxx : 
+	- modif jsp accueil : redirection si connexion admin cat ou prod vers la jsp admin
+	
+	- modif la jsp admin : 
+		- prise en compte admin cat / admin prod : Pas les mêmes droits : seul l'admin cat peut ajouter 
+		  une catégorie (et modifier dans le futur). Les deux peuvent par contre ajouter un produit
+		- renvoi vers la jsp ajoutercategorie impossible pour le moment ("access denied") [15:01]
+			- le {user} n'est pas reconnu par ailleurs
+	
+	- modif le xml security
+		- une ligne en commentaire
+		- la ligne en dessous voit son url moins restreinte
+			==> passage de "/adminproduit**" à "/admin**" en raison des modifications
+	
+	- modif le jsp 403 : rajout d'un lien de redirection à la page de login
+	
+	
+	
+28/12/2016 de 10h00 à 13h35 :
+	- recherche de l'erreur d'accès
+		==> le AccueilController fait une surcouche de sécurité.
+		==> modif des noms dans ce dernier ==> admin remplacé pour l'instant par categories
+	
+	- Je ne travaille que sur l'admin categories pour le moment
+	
+	- modifications dans les jsp accueil et admin (pour l'instant admin.jsp ne sert plus)
+	
+		- suppression des jsp magazin and Co
+		
+		- création de deux jsp : ajouterunecategorie et updatecategorie
+			- pour ajouter / modifier une catégorie
+			
+		- modifications diverses dans AdminCategorieController
+			- notamment l'url de base
+			
+			- modification des @RequestBody par un @ModelAttribute
+			
+			- création d'une seconde méthode du style init pour le update
+				- à la base, je voulais mettre le viewName du init en argument (PathVariable) mais cela 
+				  ne fonctionnait pas, donc j'en ai créé une seconde... Pas top mais ça passe.
+		  
+
+28/12/2016 de 13h42 à xxhxx :
+	- Rajouter une méthode pour lister les catégories? (ds service et controller?)
+		==> rajout de public List<Categorie> listCategories() dans l'interface IAdminCategorieMetier
+		- rajout d'une méthode lister() dans AdminCategorieController
+		- rajout de la liste dans categories.jsp
+
+
+29/12/2016 à 9h13 à 12h :
+-------------------------
+- Modification des return dans CategorieController pour avoir un actualisation de l'affichage de la liste des catégories.
+	-> response.sendRedirect("categories/listecategorie") dans accueil.jsp
+
+- Modification CategorieController = methode suppCat avec PathVariable (clic sur le lien supp pour chaque cat) + refresh de la liste
+- Modification CategorieController = methode saveCat pour avoir un refresh de la liste
+- Refactor de supprimerCategorie (méchant pseuso)
+- Modification supprimer.jsp, rajout form
+- Modification CategorieController = rajout method supp pour supprimer à partir de formulaire
+
+Normalement : Ajout Ok
+			  Modification Ok (les 2 liens)
+			  Suppression OK (les 2 liens)
+			  Refresh liste OK
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
